@@ -1,0 +1,19 @@
+PACKAGE_NAME="kgsl"
+PACKAGE_VERSION="#MODULE_VERSION#"
+
+BUILT_MODULE_NAME[0]="msm_kgsl"
+BUILT_MODULE_LOCATION[0]=""
+DEST_MODULE_LOCATION[0]="/extra/dkms"
+
+# The upstream Makefile expects KERNEL_SRC to point to the kernel build tree.
+# KGSL_PATH is auto-detected by the Makefile from its own location, so the
+# config/ and downstream_dependencies/ subdirectories are found automatically.
+MAKE[0]="make KERNEL_SRC=${kernel_source_dir}"
+CLEAN="make KERNEL_SRC=${kernel_source_dir} clean"
+AUTOINSTALL="yes"
+
+# CONFIG_PM_DEVFREQ: https://github.com/qualcomm-linux/kgsl/issues/18
+# CONFIG_SYNC_FILE: https://github.com/qualcomm-linux/kgsl/issues/17
+BUILD_EXCLUSIVE_CONFIG="CONFIG_ARCH_QCOM CONFIG_PM_DEVFREQ CONFIG_SYNC_FILE"
+
+BUILD_EXCLUSIVE_KERNEL_MIN="6.16"
