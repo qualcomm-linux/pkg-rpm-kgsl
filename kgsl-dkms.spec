@@ -1,5 +1,5 @@
 Name:           kgsl-dkms
-Version:        1.0.13
+Version:        1.0.15
 Release:        1%{?dist}
 Summary:        Qualcomm KGSL GPU kernel module (DKMS)
 License:        GPL-2.0-only
@@ -8,7 +8,6 @@ Source0:        https://github.com/qualcomm-linux/kgsl/archive/refs/tags/v%{vers
 Source1:        kgsl-dkms.dkms
 Source2:        kgsl-dkms.conf
 Source3:        50-kgsl.rules
-Source4:        governor.h
 
 BuildArch:      noarch
 BuildRequires:  cpio
@@ -28,11 +27,6 @@ it through DKMS for supported installed kernels.
 
 %prep
 %autosetup -n kgsl-%{version}
-
-# Some kernel-devel packages export the devfreq governor symbols but omit this
-# private kernel header.  Supply the compatible Linux 6.18 declaration for the
-# KGSL governors built as part of this out-of-tree module.
-install -m0644 %{SOURCE4} governor.h
 
 %build
 # The upstream Makefile builds against a selected kernel tree. DKMS invokes it
