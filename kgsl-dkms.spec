@@ -1,5 +1,5 @@
 Name:           kgsl-dkms
-Version:        1.0.15
+Version:        1.0.16
 Release:        1%{?dist}
 Summary:        Qualcomm KGSL GPU kernel module (DKMS)
 License:        GPL-2.0-only
@@ -81,5 +81,8 @@ fi
 %{udevrulesdir}/50-kgsl.rules
 
 %changelog
-* Tue Sep 01 2026 Maintainers.pkg-kgsl <Maintainers.pkg-kgsl@qualcomm.com> - 1.0.13-1
+* Fri Sep 25 2026 Maintainers.pkg-rpm-kgsl <Maintainers.pkg-rpm-kgsl@qualcomm.com> - 1.0.16-1
+- Update to upstream 1.0.16.
+
+* Tue Sep 01 2026 Maintainers.pkg-rpm-kgsl <Maintainers.pkg-rpm-kgsl@qualcomm.com> - 1.0.13-1
 - Update to upstream 1.0.13.
