@@ -1,5 +1,5 @@
 Name:           kgsl-dkms
-Version:        1.0.15
+Version:        1.0.16
 Release:        1%{?dist}
 Summary:        Qualcomm KGSL GPU kernel module (DKMS)
 License:        GPL-2.0-only
@@ -8,6 +8,9 @@ Source0:        https://github.com/qualcomm-linux/kgsl/archive/refs/tags/v%{vers
 Source1:        kgsl-dkms.dkms
 Source2:        kgsl-dkms.conf
 Source3:        50-kgsl.rules
+
+%global modprobedir %{_prefix}/lib/modprobe.d
+%global udevrulesdir %{_prefix}/lib/udev/rules.d
 
 BuildArch:      noarch
 BuildRequires:  cpio
@@ -52,9 +55,9 @@ sed -i 's/#MODULE_VERSION#/%{version}/g' \
     %{buildroot}%{_usrsrc}/kgsl-%{version}/dkms.conf
 
 install -Dm0644 %{SOURCE2} \
-    %{buildroot}/usr/lib/modprobe.d/kgsl-dkms.conf
+    %{buildroot}%{modprobedir}/kgsl-dkms.conf
 install -Dm0644 %{SOURCE3} \
-    %{buildroot}/usr/lib/udev/rules.d/50-kgsl.rules
+    %{buildroot}%{udevrulesdir}/50-kgsl.rules
 
 # Debian's initramfs-tools hook has no portable RPM equivalent. DKMS and the
 # target distribution's kernel/initramfs integration are responsible for it.
@@ -63,20 +66,23 @@ install -Dm0644 %{SOURCE3} \
 :
 
 %post
-/usr/sbin/dkms add -m kgsl -v %{version} || :
-/usr/sbin/dkms autoinstall -m kgsl -v %{version} || :
+%{_sbindir}/dkms add -m kgsl -v %{version} || :
+%{_sbindir}/dkms autoinstall -m kgsl -v %{version} || :
 
 %preun
 if [ "$1" -eq 0 ]; then
-    /usr/sbin/dkms remove -m kgsl -v %{version} --all || :
+    %{_sbindir}/dkms remove -m kgsl -v %{version} --all || :
 fi
 
 %files
 %license LICENSE.txt
 %{_usrsrc}/kgsl-%{version}
-/usr/lib/modprobe.d/kgsl-dkms.conf
-/usr/lib/udev/rules.d/50-kgsl.rules
+%{modprobedir}/kgsl-dkms.conf
+%{udevrulesdir}/50-kgsl.rules
 
 %changelog
-* Tue Sep 01 2026 Maintainers.pkg-kgsl <Maintainers.pkg-kgsl@qualcomm.com> - 1.0.13-1
+* Fri Sep 25 2026 Maintainers.pkg-rpm-kgsl <Maintainers.pkg-rpm-kgsl@qualcomm.com> - 1.0.16-1
+- Update to upstream 1.0.16.
+
+* Tue Sep 01 2026 Maintainers.pkg-rpm-kgsl <Maintainers.pkg-rpm-kgsl@qualcomm.com> - 1.0.13-1
 - Update to upstream 1.0.13.
